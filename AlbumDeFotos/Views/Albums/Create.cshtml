@@ -1,48 +1,76 @@
 ﻿@model AlbumDeFotos.Models.Album
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Novo Album";
 }
 
-<h1>Create</h1>
+<div class="formulario">
+    <div class="container">
 
-<h4>Album</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Destino" class="control-label"></label>
-                <input asp-for="Destino" class="form-control" />
-                <span asp-validation-for="Destino" class="text-danger"></span>
+        <div class="titulo">
+            <h5>Album</h5>
+            <hr />
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <form asp-action="Create" enctype="multipart/form-data">
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="input-field">
+                        <label asp-for="Destino" class="control-label"></label>
+                        <input asp-for="Destino" class="form-control" />
+                        <span asp-validation-for="Destino" class="text-danger"></span>
+                    </div>
+
+                    <img id="imagem" class="imagem" src="#" alt="Foto" />
+                    <div class="input-field">
+                        <span>Selecione a imagem</span>
+                        <input type="file" asp-for="FotoTopo" class="form-control" name="arquivo" onchange="CarregarImagem(this)" />
+                        <span asp-validation-for="FotoTopo" class="text-danger"></span>
+                    </div>
+
+                    <div class="input-field">
+                        <label asp-for="Inicio" class="control-label"></label>
+                        <input asp-for="Inicio" class="form-control datepicker" />
+                        <span asp-validation-for="Inicio" class="text-danger"></span>
+                    </div>
+                    <div class="input-field">
+                        <label asp-for="Fim" class="control-label"></label>
+                        <input asp-for="Fim" class="form-control datepicker" />
+                        <span asp-validation-for="Fim" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Salvar" class="btn btn-primary" /> &nbsp;
+                        <a asp-action="Index" class="btn btn-dark">Voltar</a>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label asp-for="FotoTopo" class="control-label"></label>
-                <input asp-for="FotoTopo" class="form-control" />
-                <span asp-validation-for="FotoTopo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Inicio" class="control-label"></label>
-                <input asp-for="Inicio" class="form-control" />
-                <span asp-validation-for="Inicio" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Fim" class="control-label"></label>
-                <input asp-for="Fim" class="form-control" />
-                <span asp-validation-for="Fim" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
+
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        $(document).ready(function () {
+            $('#imagem').hide();
+        });
+
+        function CarregarImagem(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                $("#imagem").show();
+
+                reader.onload = function (e) {
+                    $("#imagem").attr('src', e.target.result);
+                }
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    </script>
 }

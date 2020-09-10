@@ -1,53 +1,94 @@
 ﻿@model IEnumerable<AlbumDeFotos.Models.Album>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Albuns";
 }
 
-<h1>Index</h1>
+<div class="listaDestinos">
+    <div class="container">
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Destino)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FotoTopo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Inicio)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Fim)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Destino)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FotoTopo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Inicio)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Fim)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.AlbumId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.AlbumId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.AlbumId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+        <p>
+            <a asp-action="Create" class="btn btn-sm btn-outline-info">Novo Album</a>
+        </p>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Destino)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Inicio)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Fim)
+                    </th>
+                    <th>
+                        Ações
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Destino)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Inicio)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Fim)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.AlbumId" class="btn btn-sm btn-primary">Atualizar</a> |
+                            <a asp-action="Details" asp-route-id="@item.AlbumId" class="btn btn-sm btn-warning">Fotos</a> |
+                            <a onclick="Excluir(@item.AlbumId)" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#exampleModal">Excluir</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirmar Exclusão</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Deseja prosseguir com a exclusão?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success btnConfirmar" data-dismiss="modal">Sim</button>
+                <button type="button" class="btn btn-dark">Não</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    function Excluir(id) {
+        $('#exampleModal').modal();
+
+        $('.btnConfirmar').on('click', function () {
+            $.ajax({
+                url: '/Albums/Delete',
+                type: 'POST',
+                data: { id: id },
+                success: function () {
+                    location.reload(true);
+
+                    $('.modal').modal('hide');
+                }
+            });
+        });
+    }
+</script>

@@ -27,6 +27,9 @@ namespace AlbumDeFotos
         {
             services.AddControllersWithViews();
             services.AddDbContext<Contexto>(op => op.UseSqlServer(Configuration.GetConnectionString("ConexaoDb")));
+
+            //Para atualizar pagina em tempo de execução
+            services.AddRazorPages().AddRazorRuntimeCompilation();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

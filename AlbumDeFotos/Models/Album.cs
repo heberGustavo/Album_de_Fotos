@@ -14,7 +14,6 @@ namespace AlbumDeFotos.Models
         [StringLength(50, ErrorMessage = "Use menos caracteres!")]
         public string Destino { get; set; }
 
-        [Required(ErrorMessage = "Campo Obrigatório")]
         public string FotoTopo { get; set; }
 
         [DataType(DataType.Date)]

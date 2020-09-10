@@ -79,6 +79,11 @@ body {
     text-align: center;
 }
 
+#imagem{
+    width: 250px;
+    height: 250px;
+}
+
 .botoes{
     padding: 50px 25px;
 }
