@@ -1,0 +1,58 @@
+﻿@model AlbumDeFotos.Models.Imagem
+
+@{
+    ViewData["Title"] = "Nova Foto para o album " + ViewBag.Destinos.Destino;
+}
+
+<div class="formulario">
+    <div class="container">
+
+        <div class="titulo">
+            <h5>Nova foto para o album @ViewBag.Destinos.Destino </h5>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-4">
+                <form asp-action="Create" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <img id="imagem" src="#" alt="Foto" />
+                    <div class="input-field">
+                        <span>Selecione a imagem</span>
+                        <input type="file" asp-for="Link" class="form-control" name="arquivo" onchange="CarregarImagem(this)" />
+                        <span asp-validation-for="Link" class="text-danger"></span>
+                    </div>
+
+                    <input type="hidden" asp-for="AlbumId" value="@ViewBag.Destinos.AlbumId" />
+
+                    <div class="form-group">
+                        <input type="submit" value="Salvar" class="btn btn-sm btn-primary" />
+                        <a asp-controller="Albums" asp-action="Details" asp-route-id="@ViewBag.Destinos.AlbumId" class="btn btn-sm btn-dark">Voltar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        $(document).ready(function () {
+            $('#imagem').hide();
+        });
+
+        function CarregarImagem(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                $("#imagem").show();
+
+                reader.onload = function (e) {
+                    $("#imagem").attr('src', e.target.result);
+                }
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    </script>
+}

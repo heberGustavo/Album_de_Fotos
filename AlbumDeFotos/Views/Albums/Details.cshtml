@@ -1,42 +1,42 @@
 ﻿@model AlbumDeFotos.Models.Album
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalhes do album " + Model.Destino;
 }
 
-<h1>Details</h1>
+<div class="album">
+    <div class="foto">
+        <div class="container">
+            <div class="texto">
+                <h2 class="text-light">@Html.DisplayFor(model => model.Destino)</h2>
+                <h5 class="text-light">@Html.DisplayFor(model => model.Inicio) à @Html.DisplayFor(model => model.Fim)</h5>
+            </div>
+        </div>
+    </div>
 
-<div>
-    <h4>Album</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Destino)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Destino)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FotoTopo)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FotoTopo)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Inicio)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Inicio)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Fim)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Fim)
-        </dd>
-    </dl>
+    <div class="text-center pt-5">
+        <h5>Fotos de(o) @Model.Destino</h5>
+        <hr />
+        <div class="linkImagem d-none">@Model.FotoTopo</div>
+    </div>
+
+    <div class="botoes text-center">
+        <a asp-controller="Imagens" asp-action="Create" asp-route-id="@Model.AlbumId" class="btn btn-primary">Nova foto</a> |
+        <a asp-action="Index" class="btn btn-dark">Voltar</a>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.AlbumId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+@section Scripts{
+    <script>
+
+    //Pega o caminho da imagem
+    var linkImagem = $('.linkImagem').text();
+    var url = "/" + linkImagem;
+
+    //Carrega a imagem ao iniciar
+    $(document).ready(function () {
+        $('.foto').css('background-image', 'url("@Url.Content(Model.FotoTopo)")');
+    });
+
+    </script>
+}
