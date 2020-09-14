@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AlbumDeFotos.Models;
 using Microsoft.AspNetCore.Http;
@@ -67,11 +65,9 @@ namespace AlbumDeFotos.Controllers
 
                 if (arquivo != null)
                 {
-                    using (var fileStream = new FileStream(Path.Combine(linkUpload, arquivo.FileName), FileMode.Create))
-                    {
-                        await arquivo.CopyToAsync(fileStream);
-                        album.FotoTopo = "~/Imagens/" + arquivo.FileName;
-                    }
+                    using var fileStream = new FileStream(Path.Combine(linkUpload, arquivo.FileName), FileMode.Create);
+                    await arquivo.CopyToAsync(fileStream);
+                    album.FotoTopo = "~/Imagens/" + arquivo.FileName;
                 }
 
                 _context.Add(album);
@@ -94,6 +90,9 @@ namespace AlbumDeFotos.Controllers
             {
                 return NotFound();
             }
+
+            TempData["FotoTopo"] = album.FotoTopo;
+
             return View(album);
         }
 
@@ -102,17 +101,32 @@ namespace AlbumDeFotos.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AlbumId,Destino,FotoTopo,Inicio,Fim")] Album album)
+        public async Task<IActionResult> Edit(int id, [Bind("AlbumId,Destino,FotoTopo,Inicio,Fim")] Album album, IFormFile arquivo)
         {
             if (id != album.AlbumId)
             {
                 return NotFound();
             }
 
+            //Se não tiver imagem, pega do TempData
+            if (String.IsNullOrEmpty(album.FotoTopo))
+                album.FotoTopo = TempData["FotoTopo"].ToString();
+
             if (ModelState.IsValid)
             {
                 try
                 {
+
+                    //Upload da Imagem
+                    var linkUpload = Path.Combine(_environment.WebRootPath, "Imagens");
+
+                    if(arquivo != null)
+                    {
+                        using var fileStream = new FileStream(Path.Combine(linkUpload, arquivo.FileName), FileMode.Create);
+                        await arquivo.CopyToAsync(fileStream);
+                        album.FotoTopo = "~/Imagens/" + arquivo.FileName;
+                    }
+
                     _context.Update(album);
                     await _context.SaveChangesAsync();
                 }
