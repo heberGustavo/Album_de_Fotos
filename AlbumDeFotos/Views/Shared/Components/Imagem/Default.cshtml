@@ -1,0 +1,10 @@
+﻿@model IEnumerable<AlbumDeFotos.Models.Imagem>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-3">
+            <img src="@Url.Content(item.Link)" alt="Foto do Album" width="350" height="350" />
+        </div>
+    }
+</div>

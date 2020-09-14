@@ -442,3 +442,4 @@ C:\Users\SuporteSQ-06\Desktop\projetos_heber\Git\AlbumDeFotos\AlbumDeFotos\obj\D
 C:\Users\SuporteSQ-06\Desktop\projetos_heber\Git\AlbumDeFotos\AlbumDeFotos\obj\Debug\netcoreapp3.1\Razor\Views\Albums\Edit.cshtml.g.cs
 C:\Users\SuporteSQ-06\Desktop\projetos_heber\Git\AlbumDeFotos\AlbumDeFotos\obj\Debug\netcoreapp3.1\Razor\Views\Albums\Index.cshtml.g.cs
 C:\Users\SuporteSQ-06\Desktop\projetos_heber\Git\AlbumDeFotos\AlbumDeFotos\obj\Debug\netcoreapp3.1\Razor\Views\Imagens\Create.cshtml.g.cs
+C:\Users\SuporteSQ-06\Desktop\projetos_heber\Git\AlbumDeFotos\AlbumDeFotos\obj\Debug\netcoreapp3.1\Razor\Views\Shared\Components\Imagem\Default.cshtml.g.cs

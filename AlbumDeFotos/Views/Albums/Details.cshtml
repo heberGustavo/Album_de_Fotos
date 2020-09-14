@@ -26,6 +26,8 @@
     </div>
 </div>
 
+@await Component.InvokeAsync("Imagem", new { id = Model.AlbumId} )
+
 @section Scripts{
     <script>
 
