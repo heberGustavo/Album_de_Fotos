@@ -7,6 +7,7 @@ using AlbumDeFotos.Models;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using System.Collections.Generic;
 
 namespace AlbumDeFotos.Controllers
 {
@@ -152,6 +153,32 @@ namespace AlbumDeFotos.Controllers
         public async Task<JsonResult> Delete(int id)
         {
             var album = await _context.Albums.FindAsync(id);
+
+            //REMOVER IMAGENS AO EXCLUIR ALBUM
+
+            //Guarda todos os links em uma variavel
+            IEnumerable<string> links = _context.Imagens.Where(i => i.AlbumId == id).Select(i => i.Link);
+            
+            /*
+             * Percorre todos os itens dos ALBUNS;
+             * Altera o diretorio
+             * Paga os arquivos
+             */
+            foreach(var item in links)
+            {
+                var linkImagem = item.Replace("~", "wwwroot");
+                System.IO.File.Delete(linkImagem);
+            }
+
+            //Apagar os registros do banco de dados
+            _context.Imagens.RemoveRange(_context.Imagens.Where(x => x.AlbumId == id));
+
+            //Apagar imagem de topo do album
+            var linkFotoAlbum = album.FotoTopo;
+            linkFotoAlbum = linkFotoAlbum.Replace("~", "wwwroot");
+            System.IO.File.Delete(linkFotoAlbum);
+
+            //Salva as exclusões
             _context.Albums.Remove(album);
             await _context.SaveChangesAsync();
             return Json("Album excluido com sucesso!");
